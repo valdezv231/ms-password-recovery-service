@@ -1,5 +1,10 @@
 spring:
   application:
     name: ms-password-recovery-service
-  profiles:
-    active: dev
+
+  r2dbc:
+    url: r2dbc:mssql://valdezv231.database.windows.net:1433/free-sql-db-1180422
+    username: valdezv231@valdezv231
+    password: 72757455aS*
+    pool:
+      enabled: true

@@ -8,7 +8,6 @@ import com.example.mspasswordrecoveryservice.repository.PasswordResetTokenReposi
 import com.example.mspasswordrecoveryservice.service.EmailService;
 import com.example.mspasswordrecoveryservice.service.PasswordRecoveryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,10 +17,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
-
-    private static final long EXPIRATION_MINUTES = 15;
-
-    private final AppConfig config;
 
     private final PasswordResetTokenRepository repository;
     private final EmailService emailService;
@@ -59,10 +54,9 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
 
     private Mono<PasswordResetToken> createToken(String email) {
         PasswordResetToken entity = new PasswordResetToken();
-        entity.setId(UUID.randomUUID());
         entity.setEmail(email);
         entity.setToken(UUID.randomUUID().toString());
-        entity.setExpiration(java.time.LocalDateTime.now().plusMinutes(config.getExpiration()));
+        entity.setExpiration(LocalDateTime.now().plusMinutes(10));
         entity.setUsed(false);
 
         return repository.save(entity);

@@ -34,7 +34,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
-    runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")
     runtimeOnly("io.r2dbc:r2dbc-mssql:1.0.0.RELEASE")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

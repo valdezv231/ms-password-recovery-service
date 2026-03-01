@@ -2,6 +2,7 @@ spring:
   application:
     name: ms-password-recovery-service
 
+
 token:
   expiration: 3600000
   uso: 1
