@@ -1,15 +1,18 @@
 package com.example.mspasswordrecoveryservice.controller;
 
-import com.example.mspasswordrecoveryservice.model.PasswordResetToken;
-import com.example.mspasswordrecoveryservice.repository.PasswordResetTokenRepository;
+import com.example.mspasswordrecoveryservice.dto.ConfirmResetDTO;
+import com.example.mspasswordrecoveryservice.dto.PasswordResetRequestDTO;
+import com.example.mspasswordrecoveryservice.dto.TokenValidationResponseDTO;
 import com.example.mspasswordrecoveryservice.service.PasswordRecoveryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/password")
@@ -19,17 +22,17 @@ public class PasswordRecoveryController {
     private final PasswordRecoveryService service;
 
     @PostMapping("/request")
-    public Mono<Void> request(@RequestParam String email) {
-        return service.requestReset(email);
+    public Mono<Void> request(@Valid @RequestBody PasswordResetRequestDTO dto) {
+        return service.requestReset(dto);
     }
 
     @GetMapping("/validate")
-    public  Mono<Boolean> validate(@RequestParam String token) {
+    public Mono<TokenValidationResponseDTO> validate(@RequestParam String token) {
         return service.validateToken(token);
     }
 
     @PostMapping("/confirm")
-    public Mono<Void> confirm(@RequestParam String token) {
-        return service.markAsUsed(token);
+    public Mono<Void> confirm(@Valid @RequestBody ConfirmResetDTO dto) {
+        return service.markAsUsed(dto);
     }
 }

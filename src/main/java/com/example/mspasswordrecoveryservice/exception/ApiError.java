@@ -1,6 +1,7 @@
 package com.example.mspasswordrecoveryservice.exception;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
