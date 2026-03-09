@@ -1,16 +1,16 @@
 package com.example.mspasswordrecoveryservice.service;
 
-import com.example.mspasswordrecoveryservice.dto.ConfirmResetDTO;
-import com.example.mspasswordrecoveryservice.dto.PasswordResetRequestDTO;
-import com.example.mspasswordrecoveryservice.dto.TokenValidationResponseDTO;
+import com.example.mspasswordrecoveryservice.dto.ConfirmReset;
+import com.example.mspasswordrecoveryservice.dto.PasswordResetRequest;
+import com.example.mspasswordrecoveryservice.dto.TokenValidationResponse;
 import reactor.core.publisher.Mono;
 
 public interface PasswordRecoveryService {
 
-    Mono<Void> requestReset(PasswordResetRequestDTO dto);
+    Mono<Void> requestReset(PasswordResetRequest dto);
 
-    Mono<TokenValidationResponseDTO> validateToken(String token);
+    Mono<TokenValidationResponse> validateToken(String token);
 
-    Mono<Void> markAsUsed(ConfirmResetDTO dto);
+    Mono<Void> markAsUsed(ConfirmReset dto);
 
 }

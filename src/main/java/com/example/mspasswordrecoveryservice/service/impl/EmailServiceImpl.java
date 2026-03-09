@@ -12,8 +12,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public Mono<Void> send(String to, String link) {
         return Mono.fromRunnable(()-> {
-            log.info("Sending password reset email to: {}", to);
-            log.info("Reset link: {}", link);
+            log.info("Enviando correo de restablecimiento de contraseña a: {}", to);
+            log.info("Enlace de restablecimiento: {}", link);
         }).then();
     }
 }

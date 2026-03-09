@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ConfirmResetDTO {
+public class ConfirmReset {
 
-    @NotBlank(message = "Token is required")
+    @NotBlank(message = "Token es obligatorio")
     private String token;
 }

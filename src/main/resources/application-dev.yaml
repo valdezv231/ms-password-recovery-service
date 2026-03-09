@@ -25,5 +25,3 @@ logging:
     com.azure.spring: DEBUG
     com.azure.security.keyvault: DEBUG
     com.azure.identity: DEBUG
-
-

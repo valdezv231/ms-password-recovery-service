@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TokenValidationResponseDTO {
+public class TokenValidationResponse {
 
     private boolean valid;
 }

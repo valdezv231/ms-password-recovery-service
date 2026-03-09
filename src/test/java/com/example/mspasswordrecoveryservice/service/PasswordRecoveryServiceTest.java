@@ -1,9 +1,8 @@
 package com.example.mspasswordrecoveryservice.service;
 
 import com.example.mspasswordrecoveryservice.config.AppConfig;
-import com.example.mspasswordrecoveryservice.dto.ConfirmResetDTO;
-import com.example.mspasswordrecoveryservice.dto.PasswordResetRequestDTO;
-import com.example.mspasswordrecoveryservice.dto.TokenValidationResponseDTO;
+import com.example.mspasswordrecoveryservice.dto.ConfirmReset;
+import com.example.mspasswordrecoveryservice.dto.PasswordResetRequest;
 import com.example.mspasswordrecoveryservice.exception.InvalidTokenException;
 import com.example.mspasswordrecoveryservice.exception.TokenNotFoundException;
 import com.example.mspasswordrecoveryservice.model.PasswordResetToken;
@@ -84,7 +83,7 @@ class PasswordRecoveryServiceTest {
         @Test
         @DisplayName("should create token and send email → completes")
         void success() {
-            PasswordResetRequestDTO dto = new PasswordResetRequestDTO();
+            PasswordResetRequest dto = new PasswordResetRequest();
             dto.setEmail("user@example.com");
 
             when(repository.save(any())).thenReturn(Mono.just(validToken()));
@@ -100,7 +99,7 @@ class PasswordRecoveryServiceTest {
         @Test
         @DisplayName("should propagate error when email send fails")
         void emailSendFails() {
-            PasswordResetRequestDTO dto = new PasswordResetRequestDTO();
+            PasswordResetRequest dto = new PasswordResetRequest();
             dto.setEmail("user@example.com");
 
             when(repository.save(any())).thenReturn(Mono.just(validToken()));
@@ -161,7 +160,7 @@ class PasswordRecoveryServiceTest {
         @Test
         @DisplayName("existing token → sets used=true and completes")
         void success() {
-            ConfirmResetDTO dto = new ConfirmResetDTO();
+            ConfirmReset dto = new ConfirmReset();
             dto.setToken("valid-token");
 
             PasswordResetToken token = validToken();
@@ -177,7 +176,7 @@ class PasswordRecoveryServiceTest {
         @Test
         @DisplayName("token not found → throws TokenNotFoundException")
         void tokenNotFound() {
-            ConfirmResetDTO dto = new ConfirmResetDTO();
+            ConfirmReset dto = new ConfirmReset();
             dto.setToken("ghost");
 
             when(repository.findByToken("ghost")).thenReturn(Mono.empty());

@@ -1,8 +1,8 @@
 package com.example.mspasswordrecoveryservice.controller;
 
-import com.example.mspasswordrecoveryservice.dto.ConfirmResetDTO;
-import com.example.mspasswordrecoveryservice.dto.PasswordResetRequestDTO;
-import com.example.mspasswordrecoveryservice.dto.TokenValidationResponseDTO;
+import com.example.mspasswordrecoveryservice.dto.ConfirmReset;
+import com.example.mspasswordrecoveryservice.dto.PasswordResetRequest;
+import com.example.mspasswordrecoveryservice.dto.TokenValidationResponse;
 import com.example.mspasswordrecoveryservice.service.PasswordRecoveryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +22,17 @@ public class PasswordRecoveryController {
     private final PasswordRecoveryService service;
 
     @PostMapping("/request")
-    public Mono<Void> request(@Valid @RequestBody PasswordResetRequestDTO dto) {
+    public Mono<Void> request(@Valid @RequestBody PasswordResetRequest dto) {
         return service.requestReset(dto);
     }
 
     @GetMapping("/validate")
-    public Mono<TokenValidationResponseDTO> validate(@RequestParam String token) {
+    public Mono<TokenValidationResponse> validate(@RequestParam String token) {
         return service.validateToken(token);
     }
 
     @PostMapping("/confirm")
-    public Mono<Void> confirm(@Valid @RequestBody ConfirmResetDTO dto) {
+    public Mono<Void> confirm(@Valid @RequestBody ConfirmReset dto) {
         return service.markAsUsed(dto);
     }
 }

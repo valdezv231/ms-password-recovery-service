@@ -33,6 +33,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.azure.spring:spring-cloud-azure-starter-keyvault-secrets")
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.10")
+    implementation("org.springframework.kafka:spring-kafka")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

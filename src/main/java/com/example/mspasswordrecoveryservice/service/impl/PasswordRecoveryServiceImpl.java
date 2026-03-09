@@ -1,9 +1,9 @@
 package com.example.mspasswordrecoveryservice.service.impl;
 
 import com.example.mspasswordrecoveryservice.config.AppConfig;
-import com.example.mspasswordrecoveryservice.dto.ConfirmResetDTO;
-import com.example.mspasswordrecoveryservice.dto.PasswordResetRequestDTO;
-import com.example.mspasswordrecoveryservice.dto.TokenValidationResponseDTO;
+import com.example.mspasswordrecoveryservice.dto.ConfirmReset;
+import com.example.mspasswordrecoveryservice.dto.PasswordResetRequest;
+import com.example.mspasswordrecoveryservice.dto.TokenValidationResponse;
 import com.example.mspasswordrecoveryservice.exception.InvalidTokenException;
 import com.example.mspasswordrecoveryservice.exception.TokenNotFoundException;
 import com.example.mspasswordrecoveryservice.model.PasswordResetToken;
@@ -28,32 +28,32 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
     private final AppConfig appConfig;
 
     @Override
-    public Mono<Void> requestReset(PasswordResetRequestDTO dto) {
-        log.info("Password reset requested for email: {}", dto.getEmail());
+    public Mono<Void> requestReset(PasswordResetRequest dto) {
+        log.info("Solicitud de restablecimiento de contraseña para el correo: {}", dto.getEmail());
         return createToken(dto.getEmail())
                 .flatMap(this::sendResetEmail);
     }
 
     @Override
-    public Mono<TokenValidationResponseDTO> validateToken(String token) {
-        log.debug("Validating token: {}", token);
+    public Mono<TokenValidationResponse> validateToken(String token) {
+        log.debug("Validando token: {}", token);
         return repository.findByToken(token)
                 .switchIfEmpty(Mono.error(new TokenNotFoundException("Token not found")))
                 .filter(this::isValid)
                 .switchIfEmpty(Mono.error(new InvalidTokenException("Token expired or already used")))
                 .map(t -> {
-                    log.info("Token validated successfully for email: {}", t.getEmail());
-                    return TokenValidationResponseDTO.builder().valid(true).build();
+                    log.info("Token validado exitosamente para el correo: {}", t.getEmail());
+                    return TokenValidationResponse.builder().valid(true).build();
                 });
     }
 
     @Override
-    public Mono<Void> markAsUsed(ConfirmResetDTO dto) {
-        log.info("Marking token as used: {}", dto.getToken());
+    public Mono<Void> markAsUsed(ConfirmReset dto) {
+        log.info("Marcando token como usado: {}", dto.getToken());
         return repository.findByToken(dto.getToken())
                 .switchIfEmpty(Mono.error(new TokenNotFoundException("Token not found")))
                 .flatMap(t -> {
-                    log.debug("Setting used=true for token associated with email: {}", t.getEmail());
+                    log.debug("Estableciendo usado=true para el token asociado al correo: {}", t.getEmail());
                     t.setUsed(true);
                     return repository.save(t);
                 })
@@ -68,12 +68,12 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
                 .used(false)
                 .build();
 
-        log.debug("Creating token for email: {}, expires at: {}", email, token.getExpiration());
+        log.debug("Creando token para el correo: {}, expira en: {}", email, token.getExpiration());
         return repository.save(token);
     }
 
     private Mono<Void> sendResetEmail(PasswordResetToken token) {
-        log.info("Sending reset email to: {}", token.getEmail());
+        log.info("Enviando correo de restablecimiento a: {}", token.getEmail());
         return emailService.send(token.getEmail(), buildResetLink(token.getToken()));
     }
 
@@ -81,7 +81,7 @@ public class PasswordRecoveryServiceImpl implements PasswordRecoveryService {
         boolean valid = Boolean.FALSE.equals(token.getUsed())
                 && token.getExpiration().isAfter(LocalDateTime.now());
         if (!valid) {
-            log.warn("Token validation failed for email: {} — used: {}, expiration: {}",
+            log.warn("Validación de token fallida para el correo: {} — usado: {}, expiración: {}",
                     token.getEmail(), token.getUsed(), token.getExpiration());
         }
         return valid;
