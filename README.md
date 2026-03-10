@@ -2,7 +2,7 @@
 
 Microservicio reactivo de recuperación de contraseña desarrollado con **Java 17 + Spring WebFlux + SQL Server**.
 
-Implementa principios **SOLID**, manejo global de errores, programación reactiva y arquitectura por capas.
+Implementa manejo global de errores, programación reactiva y arquitectura por capas.
 
 ---
 
